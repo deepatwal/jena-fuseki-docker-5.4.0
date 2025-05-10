@@ -1,117 +1,48 @@
-# Apache Jena Fuseki Docker Tools
 
-This package contains a Dockerfile, docker-compose file, and helper scripts to
-create a docker container for Apache Jena Fuseki.
+#----------------------------------------------------------------------------------------------
+# this is to run bulk import using tdb2 loader
+                /c/Users/deepa/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4.0
+export JENAROOT=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
+export JENA_HOME=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
+export PATH=$PATH:$JENA_HOME/bin
 
-The docker container is based on 
-[Fuseki main](https://jena.apache.org/documentation/fuseki2/fuseki-main)
-for running a SPARQL server.
+deepa@illusion MINGW64 ~/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4.0/bat
+  $ ./sparql.bat --version
 
-There is no UI - all configuration is by command line and all usage by via the
-network protocols.
+  $ ./tdb2_tdbstats.bat \
+    --verbose \
+    --loc="C:/Users/deepa/data/workspace/github/apache-jena-fuseki-5.4.0/apache-jena-fuseki-5.4.0/run/databases/myDataset_v02_5-10-2025" \
+    --graph="https://www.sw.org/ontology/doid"
+ 
+  $ ./tdb2_tdbloader.bat \
+    --verbose \
+    --loader=parallel \
+    --loc="C:/Users/deepa/data/workspace/github/apache-jena-fuseki-5.4.0/apache-jena-fuseki-5.4.0/run/databases/myDataset_v02_5-10-2025" \
+    --graph="https://www.sw.org/dpbedia/data" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\instance-types_lang=en_specific.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\instance-types_lang=en_transitive.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-literals_lang=en.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en_disjointDomain.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en_disjointRange.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\specific-mappingbased-properties_lang=en.ttl"
 
-Databases can be mounted outside the docker container so they are preserved when
-the container terminates.
+  $ ./tdb2_tdbquery.bat \
+    --verbose \
+    --loc="C:/Users/deepa/data/workspace/github/apache-jena-fuseki-5.4.0/apache-jena-fuseki-5.4.0/run/databases/myDataset_v02_5-10-2025" \
+    "SELECT ?s ?p ?o WHERE { GRAPH <https://www.sw.org/ontology/doid> { ?s ?p ?o } } LIMIT 10"
 
-This build system allows the user to customize the docker image.
+#----------------------------------------------------------------------------------------------
+     
+# run the fuseki server
+java -jar fuseki-server.jar
 
-The docker build downloads the server binary from 
-[Maven central](https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-server/),
-checking the download against the SHA1 checksum.
-
-## Database
-
-There is a volume mapping "./databases" in the current directory into the server.
-This can be used to contain databases outside, but accessible to, the container
-that do not get deleted when the container exits.
-
-See examples below.
-
-## Build
-
-Choose the version number of Apache Jena release you wish to use. This toolkit
-defaults to the version of the overall Jena release it was part of. It is best
-to use the release of this set of tools from the same release of the desired
-server.
-
-    docker-compose build --build-arg JENA_VERSION=5.4.0
-
-Note the build command must provide the version number.
-
-## Test Run
-
-`docker-compose run` can be used to test the build from the previous section.
-
-Examples:
-
-Start Fuseki with an in-memory, updatable dataset at http://<i>host</i>:3030/ds
-
-    docker-compose run --rm --service-ports fuseki --mem /ds
-
-Load a TDB2 database, and expose, read-only, via docker:
-
-    mkdir -p databases/DB2
-    tdb2.tdbloader --loc databases/DB2 MyData.ttl
-    # Publish read-only
-    docker-compose run --rm --name MyServer --service-ports fuseki --tdb2 --loc databases/DB2 /ds
-
-To allow update on the database, add `--update`. Updates are persisted.
-
-    docker-compose run --rm --name MyServer --service-ports fuseki --tdb2 --update --loc databases/DB2 /ds
-
-See
-[fuseki-configuration](https://jena.apache.org/documentation/fuseki2/fuseki-configuration.html)
-for more information on command line arguments.
-
-To use `docker-compose up`, edit the `docker-compose.yaml` to set the Fuseki
-command line arguments appropriately.
-
-## Layout
-
-The default layout in the container is:
-
-| Path  | Use | 
-| ----- | --- |
-| /opt/java-minimal | A reduced size Java runtime                      |
-| /fuseki | The Fuseki installation                                    |
-| /fuseki/log4j2.properties | Logging configuration                    |
-| /fuseki/databases/ | Directory for a volume for persistent databases |
-
-## Setting JVM arguments
-
-Use `JAVA_OPTIONS`:
-
-    docker-compose run --service-ports --rm -e JAVA_OPTIONS="-Xmx1048m -Xms1048m" --name MyServer fuseki --mem /ds
-
-## Docker Commands
-
-If you prefer to use `docker` directly:
-
-Build:
-
-    docker build --force-rm --build-arg JENA_VERSION=4.7.0 -t fuseki .
-
-Run:
-
-    docker run -i --rm -p "3030:3030" --name MyServer -t fuseki --mem /ds
-
-With databases on a bind mount to host filesystem directory:
-
-    MNT="--mount type=bind,src=$PWD/databases,dst=/fuseki/databases"
-    docker run -i --rm -p "3030:3030" $MNT --name MyServer -t fuseki --tdb2 --update --loc databases/DB2 /ds
-
-## Version specific notes:
-
-* Versions of Jena up to 3.14.0 use Log4j1 for logging. The docker will build will ignore
-   the log4j2.properties file
-* Version 3.15.0: When run, a warning will be emitted.  
-  `WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.`  
-  This can be ignored.
-
+#----------------------------------------------------------------------------------------------
 
 docker compose build --no-cache
 docker compose up
 
+#----------------------------------------------------------------------------------------------
 
 /opt/apache-jena-5.4.0 $ sparql --version
 Apache Jena version 5.4.0
@@ -119,6 +50,7 @@ Apache Jena version 5.4.0
 /opt/apache-jena-5.4.0 $ tdb2.tdbloader --help
 
 tdb2.tdbstats --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
+#----------------------------------------------------------------------------------------------
 
 # from outside the running container
     - docker exec -it 8282e244ec78 tdb2.tdbstats --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
@@ -144,4 +76,4 @@ tdb2.tdbstats --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
           --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
 
         $  docker compose run --rm fuseki sh
-        
+#----------------------------------------------------------------------------------------------

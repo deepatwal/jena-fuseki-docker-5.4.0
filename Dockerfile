@@ -1,69 +1,31 @@
-# Base image for Java
+# Use official Eclipse Temurin JDK base image directly
 ARG JAVA_VERSION=21
-ARG ALPINE_VERSION=3.21.2
-ARG FUSEKI_VERSION=5.4.0
-ARG FUSEKI_JAR=fuseki-server.jar
+FROM eclipse-temurin:${JAVA_VERSION}-alpine
+
 ARG JENA_VERSION=5.4.0
 ARG REPO=https://repo1.maven.org/maven2
 
-# ---- Stage: Download and build Java
-FROM eclipse-temurin:${JAVA_VERSION}-alpine AS base
+# Install curl to fetch Jena CLI tools
+RUN apk add --no-cache curl
 
-WORKDIR /fuseki
-
-# ---- Stage: Build runtime
-FROM alpine:${ALPINE_VERSION}
-
-# Install dependencies
-RUN apk update && apk add --no-cache \
-    bash \
-    curl \
-    ca-certificates \
-    && rm -rf /var/cache/apk/*
-
-# Copy Java runtime
-COPY --from=base /opt/java/openjdk /opt/java/openjdk
-
-# Copy Fuseki directory (optional placeholder)
-COPY --from=base /fuseki /fuseki
-
-# Download and extract Apache Jena tools from Maven Central
-ARG JENA_VERSION
-ARG REPO
+# Download and extract Apache Jena CLI tools
 RUN curl -fSL "${REPO}/org/apache/jena/apache-jena/${JENA_VERSION}/apache-jena-${JENA_VERSION}.tar.gz" -o /tmp/jena.tar.gz && \
-    tar -xzf /tmp/jena.tar.gz -C /opt && \
+    mkdir -p /opt/jena && \
+    tar -xzf /tmp/jena.tar.gz -C /opt/jena --strip-components=1 && \
     rm /tmp/jena.tar.gz
 
-# Set environment variables
-ENV JAVA_HOME=/opt/java/openjdk
-ENV JENA_HOME=/opt/apache-jena-${JENA_VERSION}
-ENV PATH="${JAVA_HOME}/bin:${JENA_HOME}/bin:${PATH}"
+# Set environment variables for Jena
+ENV JENA_HOME=/opt/jena \
+    PATH="/opt/java/openjdk/bin:$JENA_HOME/bin:$PATH"
 
-# Set working directory
+# Set working directory for Fuseki server
 WORKDIR /fuseki
 
-# Create fuseki user and folders
-ARG JENA_USER=fuseki
-ARG JENA_GROUP=$JENA_USER
-ARG JENA_GID=1000
-ARG JENA_UID=1000
-
-RUN addgroup -g "${JENA_GID}" "${JENA_GROUP}" && \
-    adduser "${JENA_USER}" -G "${JENA_GROUP}" -s /bin/ash -u "${JENA_UID}" -H -D && \
-    mkdir --parents /fuseki && \
-    chown -R $JENA_USER /fuseki
-
-USER $JENA_USER
-
-RUN mkdir -p /fuseki/logs && mkdir -p /fuseki/databases && mkdir -p /fuseki/tmp
+# Copy Fuseki server JAR from local context into container
+COPY fuseki-server.jar .
 
 # Expose Fuseki server port
 EXPOSE 3030
 
-# Copy Fuseki server jar from local context
-COPY ${FUSEKI_JAR} /fuseki/
-
-# Define default CMD to run the Fuseki server (this is the default behavior)
+# Default command to run Fuseki server
 CMD ["java", "-jar", "fuseki-server.jar"]
-
-# Ensure that utilities like tdb2 commands are available for use

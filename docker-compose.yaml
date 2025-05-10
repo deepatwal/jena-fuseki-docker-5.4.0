@@ -27,6 +27,7 @@ services:
     ports:
       - "3030:3030"
     volumes:
+      # - ./jena-lib:/opt/jena
       - ./run:/fuseki/run
       - ./tmp:/fuseki/tmp
       # - ./logs:/fuseki/logs
