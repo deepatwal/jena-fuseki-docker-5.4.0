@@ -28,6 +28,7 @@ services:
       - "3030:3030"
     volumes:
       - ./run:/fuseki/run
+      - ./tmp:/tmp
       # - ./logs:/fuseki/logs
       # - ./databases:/fuseki/databases
       # - ./config:/fuseki/run/configuration
