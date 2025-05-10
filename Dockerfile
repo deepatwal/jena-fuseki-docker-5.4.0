@@ -63,5 +63,7 @@ EXPOSE 3030
 # Copy Fuseki server jar from local context
 COPY ${FUSEKI_JAR} /fuseki/
 
-# Set entrypoint to start the server
-ENTRYPOINT ["java", "-jar", "fuseki-server.jar"]
+# Define default CMD to run the Fuseki server (this is the default behavior)
+CMD ["java", "-jar", "fuseki-server.jar"]
+
+# Ensure that utilities like tdb2 commands are available for use
