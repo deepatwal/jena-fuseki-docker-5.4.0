@@ -126,7 +126,12 @@ tdb2.tdbstats --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
 
     ## didn't worked
         - docker exec -it 8282e244ec78 tdb2.tdbloader --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025 --graph=https://www.sw.org/ontology/doid /tmp/doid.owl
-
+         
+        - docker-compose exec fuseki tdb2.tdbloader \
+            --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025 \
+            --graph=https://www.sw.org/ontology/doid \
+            /fuseki/tmp/doid.owl
+    
     ## this worked
         - export MSYS_NO_PATHCONV=1
         
@@ -135,13 +140,8 @@ tdb2.tdbstats --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
         --graph=https://www.sw.org/ontology/doid \
         --loader=parallel /fuseki/tmp/doid.owl
 
-        docker-compose exec fuseki tdb2.tdbloader \
-        --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025 \
-        --graph=https://www.sw.org/ontology/doid \
-        /fuseki/tmp/doid.owl
-
-
         - docker compose run --rm fuseki tdb2.tdbstats \
           --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
 
         $  docker compose run --rm fuseki sh
+        

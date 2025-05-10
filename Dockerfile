@@ -55,7 +55,7 @@ RUN addgroup -g "${JENA_GID}" "${JENA_GROUP}" && \
 
 USER $JENA_USER
 
-RUN mkdir -p /fuseki/logs && mkdir -p /fuseki/databases
+RUN mkdir -p /fuseki/logs && mkdir -p /fuseki/databases && mkdir -p /fuseki/tmp
 
 # Expose Fuseki server port
 EXPOSE 3030
