@@ -43,13 +43,35 @@ docker compose build --no-cache
 docker compose up
 
 #----------------------------------------------------------------------------------------------
+# main directory from where all the commands are running:
+/fuseki # pwd
+/fuseki
 
-/opt/apache-jena-5.4.0 $ sparql --version
+/fuseki # /opt/jena/bin/sparql --version
 Apache Jena version 5.4.0
 
-/opt/apache-jena-5.4.0 $ tdb2.tdbloader --help
+/fuseki # /opt/jena/bin/tdb2.tdbloader --help
 
-tdb2.tdbstats --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
+/opt/jena/bin/tdb2.tdbloader \
+--verbose \
+--debug \
+--loader=parallel \
+--loc="run/databases/myDataset_v02_5-10-2025" \
+--graph="https://www.sw.org/doid/ontology" \
+"tmp/doid.owl"
+
+/opt/jena/bin/tdb2.tdbstats \
+--verbose \
+--debug \
+--loc="run/databases/myDataset_v02_5-10-2025" \
+--graph="https://www.sw.org/doid/ontology"
+
+/opt/jena/bin/tdb2.tdbquery \
+--verbose \
+--debug \
+--loc="run/databases/myDataset_v02_5-10-2025" \
+"SELECT ?s ?p ?o WHERE { GRAPH <https://www.sw.org/doid/ontology> { ?s ?p ?o } } LIMIT 10"
+
 #----------------------------------------------------------------------------------------------
 
 # from outside the running container
