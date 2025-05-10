@@ -107,3 +107,7 @@ With databases on a bind mount to host filesystem directory:
 * Version 3.15.0: When run, a warning will be emitted.  
   `WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.`  
   This can be ignored.
+
+
+docker compose build --no-cache
+docker compose up

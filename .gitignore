@@ -6,3 +6,4 @@ run/databases
 run/logs
 run/backups
 apache-jena-5.4.0
+/tmp/
