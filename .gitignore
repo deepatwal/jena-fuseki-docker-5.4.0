@@ -2,4 +2,6 @@
 .gradle
 
 # Ignore Gradle build output directory
-run/
+run/databases
+run/logs
+run/backups
