@@ -64,8 +64,8 @@ tdb2_tdbstats.bat ^
 
   tdb2_tdbquery.bat \
     --verbose \
-    --loc="C:/Users/deepa/data/workspace/github/apache-jena-fuseki-5.4.0/apache-jena-fuseki-5.4.0/run/databases/myDataset_v02_5-10-2025" \
-    "SELECT ?s ?p ?o WHERE { GRAPH <https://www.sw.org/ontology/doid> { ?s ?p ?o } } LIMIT 10"
+    --loc="C:\Users\deepa\data\workspace\github\jena-fuseki-docker-5.4.0\databases\myDataset-05" \
+    "SELECT ?s ?p ?o WHERE { GRAPH <https://www.sw.org/dpbedia/data> { ?s ?p ?o } } LIMIT 10"
 
 #----------------------------------------------------------------------------------------------
 # run from outside the docker container:
