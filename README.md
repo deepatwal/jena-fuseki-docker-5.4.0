@@ -75,7 +75,7 @@ Apache Jena version 5.4.0
 --verbose \
 --debug \
 --loader=parallel \
---loc="run/databases/myDataset_v02_5-10-2025" \
+--loc="run/databases/mydataset-02" \
 --graph="https://www.sw.org/doid/ontology" \
 "tmp/doid.owl"
 
