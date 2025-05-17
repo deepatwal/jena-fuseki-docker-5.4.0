@@ -18,25 +18,41 @@ java -jar fuseki-server.jar
 
 #----------------------------------------------------------------------------------------------
 # this is to run bulk import using tdb2 loader in windows
-              
-/c/Users/deepa/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4.0
+  set JENAROOT=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
+  set JENA_HOME=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
+  set PATH=%PATH%;%JENA_HOME%\bin
 
-export JENAROOT=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
-export JENA_HOME=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
-export PATH=$PATH:$JENA_HOME/bin
+C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0\bat>
+sparql.bat --version
+tdb2_tdbstats.bat  --help
 
-deepa@illusion MINGW64 ~/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4.0/bat
-  $ ./sparql.bat --version
+tdb2_tdbstats.bat ^
+--verbose ^ 
+--loader=parallel ^
+--loc="C:\Users\deepa\data\workspace\github\jena-fuseki-docker-5.4.0\databases\myDataset-05" ^
+--graph="https://www.sw.org/dpbedia/data" ^
+"C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\instance-types_lang=en_specific.ttl" ^
+"C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\instance-types_lang=en_transitive.ttl" ^
+"C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-literals_lang=en.ttl" ^
+"C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en.ttl" ^
+"C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en_disjointDomain.ttl" ^
+"C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en_disjointRange.ttl" ^
+"C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\specific-mappingbased-properties_lang=en.ttl"
 
-  $ ./tdb2_tdbstats.bat \
-    --verbose \
-    --loc="C:/Users/deepa/data/workspace/github/apache-jena-fuseki-5.4.0/apache-jena-fuseki-5.4.0/run/databases/myDataset_v02_5-10-2025" \
-    --graph="https://www.sw.org/ontology/doid"
- 
-  $ ./tdb2_tdbloader.bat \
+#----------------------------------------------------------------------------------------------
+# this is to run bulk import using tdb2 loader in linux (working)
+  export JENAROOT=C:\\Users\\deepa\\data\\workspace\\github\\jena-fuseki-docker-5.4.0\\apache-jena-5.4.0
+  export JENA_HOME=C:\\Users\\deepa\\data\\workspace\\github\\jena-fuseki-docker-5.4.0\\apache-jena-5.4.0
+  export PATH=$PATH:$JENA_HOME\\bin
+
+  cd /c/Users/deepa/data/workspace/github/jena-fuseki-docker-5.4.0/apache-jena-5.4.0/bat
+
+  sparql.bat --version
+
+  tdb2_tdbloader.bat \
     --verbose \
     --loader=parallel \
-    --loc="C:/Users/deepa/data/workspace/github/apache-jena-fuseki-5.4.0/apache-jena-fuseki-5.4.0/run/databases/myDataset_v02_5-10-2025" \
+    --loc="C:\Users\deepa\data\workspace\github\jena-fuseki-docker-5.4.0\databases\myDataset-05" \
     --graph="https://www.sw.org/dpbedia/data" \
     "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\instance-types_lang=en_specific.ttl" \
     "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\instance-types_lang=en_transitive.ttl" \
@@ -46,7 +62,7 @@ deepa@illusion MINGW64 ~/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4
     "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en_disjointRange.ttl" \
     "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\specific-mappingbased-properties_lang=en.ttl"
 
-  $ ./tdb2_tdbquery.bat \
+  tdb2_tdbquery.bat \
     --verbose \
     --loc="C:/Users/deepa/data/workspace/github/apache-jena-fuseki-5.4.0/apache-jena-fuseki-5.4.0/run/databases/myDataset_v02_5-10-2025" \
     "SELECT ?s ?p ?o WHERE { GRAPH <https://www.sw.org/ontology/doid> { ?s ?p ?o } } LIMIT 10"

@@ -7,7 +7,8 @@ services:
     ports:
       - "3030:3030"
     volumes:
-      # - ./config.ttl:/fuseki/run/config.ttl
+      - ./databases:/fuseki/run/databases
+      - ./configuration:/fuseki/run/configuration
       - ./shiro.ini:/fuseki/run/shiro.ini
       - ./tmp:/fuseki/tmp
     environment:
