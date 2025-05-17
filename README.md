@@ -52,6 +52,16 @@ deepa@illusion MINGW64 ~/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4
     "SELECT ?s ?p ?o WHERE { GRAPH <https://www.sw.org/ontology/doid> { ?s ?p ?o } } LIMIT 10"
 
 #----------------------------------------------------------------------------------------------
+# run from outside the docker container:
+docker exec -it 3c08cf88e317 \
+  sh -c '/opt/jena/bin/tdb2.tdbloader \
+         --verbose \
+         --loader=parallel \
+         --loc=/fuseki/run/databases/mydatabase.ttl \
+         --graph=https://www.sw.org/doid/ontology \
+         /fuseki/tmp/doid.owl'
+
+#----------------------------------------------------------------------------------------------
 # main directory from where all the commands are running in docker: 
 /fuseki # pwd
 /fuseki

@@ -25,4 +25,4 @@ COPY fuseki-server.jar .
 
 # Expose port & default command
 EXPOSE 3030
-CMD ["java", "-jar", "fuseki-server.jar", "--conf=/fuseki/run/shiro.ini"]
+CMD ["java", "-jar", "fuseki-server.jar"]

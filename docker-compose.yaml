@@ -9,7 +9,6 @@ services:
     volumes:
       - ./run:/fuseki/run
       - ./tmp:/fuseki/tmp
-      - ./shiro.ini:/fuseki/run/shiro.ini
     environment:
       FUSEKI_ADMIN_USER: admin
       FUSEKI_ADMIN_PASSWORD: admin
