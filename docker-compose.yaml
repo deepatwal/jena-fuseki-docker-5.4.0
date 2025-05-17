@@ -1,4 +1,3 @@
-
 services:
   fuseki:
     build:
@@ -8,8 +7,9 @@ services:
     ports:
       - "3030:3030"
     volumes:
-      # - ./jena-lib:/opt/jena
       - ./run:/fuseki/run
       - ./tmp:/fuseki/tmp
-
-#volumes:
+      - ./shiro.ini:/fuseki/run/shiro.ini
+    environment:
+      FUSEKI_ADMIN_USER: admin
+      FUSEKI_ADMIN_PASSWORD: admin

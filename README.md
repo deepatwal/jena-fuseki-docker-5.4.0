@@ -1,7 +1,26 @@
+#----------------------------------------------------------------------------------------------
+pre requisite:
+
+export USER_ID=$(id -u)
+export GROUP_ID=$(id -g)
+sudo chown -R $(id -u):$(id -g) ./run ./tmp
 
 #----------------------------------------------------------------------------------------------
-# this is to run bulk import using tdb2 loader
-                /c/Users/deepa/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4.0
+# build image
+docker compose build --no-cache
+docker compose up
+
+or 
+#----------------------------------------------------------------------------------------------
+     
+# run the fuseki server as normal java application
+java -jar fuseki-server.jar
+
+#----------------------------------------------------------------------------------------------
+# this is to run bulk import using tdb2 loader in windows
+              
+/c/Users/deepa/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4.0
+
 export JENAROOT=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
 export JENA_HOME=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
 export PATH=$PATH:$JENA_HOME/bin
@@ -33,17 +52,7 @@ deepa@illusion MINGW64 ~/data/workspace/github/apache-jena-5.4.0/apache-jena-5.4
     "SELECT ?s ?p ?o WHERE { GRAPH <https://www.sw.org/ontology/doid> { ?s ?p ?o } } LIMIT 10"
 
 #----------------------------------------------------------------------------------------------
-     
-# run the fuseki server
-java -jar fuseki-server.jar
-
-#----------------------------------------------------------------------------------------------
-
-docker compose build --no-cache
-docker compose up
-
-#----------------------------------------------------------------------------------------------
-# main directory from where all the commands are running:
+# main directory from where all the commands are running in docker: 
 /fuseki # pwd
 /fuseki
 
