@@ -7,9 +7,9 @@ services:
     ports:
       - "3030:3030"
     volumes:
-      - ./run:/fuseki/run
+      - ./config.ttl:/fuseki/run/config.ttl
+      - ./shiro.ini:/fuseki/run/shiro.ini
       - ./tmp:/fuseki/tmp
-      - ./jena:/opt/jena 
     environment:
       FUSEKI_ADMIN_USER: admin
       FUSEKI_ADMIN_PASSWORD: admin
