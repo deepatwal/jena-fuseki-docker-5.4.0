@@ -9,6 +9,7 @@ services:
     volumes:
       - ./run:/fuseki/run
       - ./tmp:/fuseki/tmp
+      - ./jena:/opt/jena 
     environment:
       FUSEKI_ADMIN_USER: admin
       FUSEKI_ADMIN_PASSWORD: admin
