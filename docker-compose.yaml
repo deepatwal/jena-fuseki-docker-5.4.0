@@ -14,3 +14,9 @@ services:
     environment:
       FUSEKI_ADMIN_USER: admin
       FUSEKI_ADMIN_PASSWORD: admin
+    networks:
+      - rdfnet
+
+networks:
+  rdfnet:
+    external: true
