@@ -21,6 +21,7 @@ java -jar fuseki-server.jar
   set JENAROOT=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
   set JENA_HOME=C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0
   set PATH=%PATH%;%JENA_HOME%\bin
+  set PATH=%PATH%;%JENA_HOME%\bat
 
 C:\Users\deepa\data\workspace\github\apache-jena-5.4.0\apache-jena-5.4.0\bat>
 sparql.bat --version
@@ -133,4 +134,12 @@ Apache Jena version 5.4.0
           --loc=/fuseki/run/databases/myDataset_bulk_load_5-10-2025
 
         $  docker compose run --rm fuseki sh
+#----------------------------------------------------------------------------------------------
+# build jena index
+java -cp $FUSEKI_HOME/fuseki-server.jar jena.textindexer --desc=assembler_file
+
+  cd ~/data/workspace/github/jena-fuseki-docker-5.4.0 
+  java -cp fuseki-server.jar jena.textindexer -desc=config-w.ttl
+
+
 #----------------------------------------------------------------------------------------------
