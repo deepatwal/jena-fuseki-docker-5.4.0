@@ -141,5 +141,4 @@ java -cp $FUSEKI_HOME/fuseki-server.jar jena.textindexer --desc=assembler_file
   cd ~/data/workspace/github/jena-fuseki-docker-5.4.0 
   java -cp fuseki-server.jar jena.textindexer -desc=config-w.ttl
 
-
 #----------------------------------------------------------------------------------------------

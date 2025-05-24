@@ -35,7 +35,7 @@ PREFIX text:    <http://jena.apache.org/text#>
 # Lucene text index configuration
 :luceneIndex a text:TextIndexLucene ;
     # Use a relative directory inside the dataset folder
-    text:directory <file:/fuseki/run/databases/dbpedia-21-05-2025/lucene> ;
+    text:directory <file:/C:/Users/deepa/data/workspace/github/jena-fuseki-docker-5.4.0/databases/dbpedia-21-05-2025/lucene> ;
     # Store literal values to enable result retrieval
     text:storeValues true ;
     # Default analyzer used for indexing and querying
