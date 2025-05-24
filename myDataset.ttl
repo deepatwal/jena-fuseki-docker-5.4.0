@@ -6,9 +6,9 @@ PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX tdb2:   <http://jena.apache.org/2016/tdb#>
 
 :service_tdb_all  rdf:type            fuseki:Service;
-        rdfs:label                    "TDB2 myDataset_v02_5-10-2025";
+        rdfs:label                    "TDB2 dbpedia-21-05-2025";
         fuseki:dataset                :tdb_dataset_readwrite;
-        fuseki:name                   "myDataset_v02_5-10-2025";
+        fuseki:name                   "dbpedia-21-05-2025";
         fuseki:serviceQuery           "query" , "sparql" , "";
         fuseki:serviceReadGraphStore  "get";
         fuseki:serviceReadWriteGraphStore
@@ -18,4 +18,4 @@ PREFIX tdb2:   <http://jena.apache.org/2016/tdb#>
 
 :tdb_dataset_readwrite
         rdf:type       tdb2:DatasetTDB2;
-        tdb2:location  "/fuseki/run/databases/myDataset_v02_5-10-2025" .
+        tdb2:location  "/fuseki/run/databases/dbpedia-21-05-2025" .

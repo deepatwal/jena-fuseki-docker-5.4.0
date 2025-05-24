@@ -25,4 +25,4 @@ COPY fuseki-server.jar .
 
 # Expose port & default command
 EXPOSE 3030
-CMD ["java", "-jar", "fuseki-server.jar"]
+CMD ["java", "-jar", "fuseki-server.jar", "--config", "/fuseki/run/config.ttl"]

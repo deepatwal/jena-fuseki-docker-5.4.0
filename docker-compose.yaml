@@ -9,6 +9,7 @@ services:
     volumes:
       - ./databases:/fuseki/run/databases
       - ./configuration:/fuseki/run/configuration
+      - ./config.ttl:/fuseki/run/config.ttl
       - ./shiro.ini:/fuseki/run/shiro.ini
       - ./tmp:/fuseki/tmp
     environment:

@@ -52,15 +52,15 @@ tdb2_tdbstats.bat ^
   tdb2_tdbloader.bat \
     --verbose \
     --loader=parallel \
-    --loc="C:\Users\deepa\data\workspace\github\jena-fuseki-docker-5.4.0\databases\myDataset-05" \
+    --loc="C:\Users\deepa\data\workspace\github\jena-fuseki-docker-5.4.0\databases\dbpedia-21-05-2025" \
     --graph="https://www.sw.org/dpbedia/data" \
-    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\instance-types_lang=en_specific.ttl" \
-    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\instance-types_lang=en_transitive.ttl" \
-    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-literals_lang=en.ttl" \
-    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en.ttl" \
-    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en_disjointDomain.ttl" \
-    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\mappingbased-objects_lang=en_disjointRange.ttl" \
-    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-14-04-2025-data\specific-mappingbased-properties_lang=en.ttl"
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-21-05-2025-data\instance-types_lang=en_specific.ttl\instance-types_lang=en_specific.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-21-05-2025-data\instance-types_lang=en_transitive.ttl\instance-types_lang=en_transitive.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-21-05-2025-data\mappingbased-literals_lang=en.ttl\mappingbased-literals_lang=en.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-21-05-2025-data\mappingbased-objects_lang=en.ttl\mappingbased-objects_lang=en.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-21-05-2025-data\mappingbased-objects_lang=en_disjointDomain.ttl\mappingbased-objects_lang=en_disjointDomain.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-21-05-2025-data\mappingbased-objects_lang=en_disjointRange.ttl\mappingbased-objects_lang=en_disjointRange.ttl" \
+    "C:\Users\deepa\data\workspace\notebooks\datasets\dbpedia-21-05-2025-data\specific-mappingbased-properties_lang=en.ttl\specific-mappingbased-properties_lang=en.ttl"
 
   tdb2_tdbquery.bat \
     --verbose \
