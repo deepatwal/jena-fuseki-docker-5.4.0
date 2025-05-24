@@ -63,7 +63,7 @@ PREFIX text:    <http://jena.apache.org/text#>
         [ text:field "foaf:name" ; 
           text:predicate foaf:name ; 
           text:analyzer [ a text:StandardAnalyzer ] ]
-        [ text:field "skos:skos:prefLabel" ; 
+        [ text:field "skos:prefLabel" ; 
           text:predicate skos:prefLabel ; 
           text:analyzer [ a text:StandardAnalyzer ] ]
         [ text:field "comment" ; 
