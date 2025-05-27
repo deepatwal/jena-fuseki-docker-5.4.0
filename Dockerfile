@@ -22,7 +22,10 @@ ENV JAVA_HOME=/opt/java/openjdk \
 # Workdir and app JAR
 WORKDIR /fuseki
 COPY fuseki-server.jar .
+COPY start.sh /fuseki/start.sh
+RUN chmod +x /fuseki/start.sh
 
 # Expose port & default command
 EXPOSE 3030
-CMD ["java", "-jar", "fuseki-server.jar", "--config", "/fuseki/run/config.ttl"]
+
+CMD ["/fuseki/start.sh"]
