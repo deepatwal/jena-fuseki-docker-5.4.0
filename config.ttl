@@ -6,7 +6,7 @@ PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX foaf:   <http://xmlns.com/foaf/0.1/>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
 PREFIX tdb2:   <http://jena.apache.org/2016/tdb#>
-PREFIX text:    <http://jena.apache.org/text#>
+PREFIX text:   <http://jena.apache.org/text#>
 
 [] a fuseki:Server ;
    fuseki:services (
@@ -32,38 +32,29 @@ PREFIX text:    <http://jena.apache.org/text#>
   ] ;
   text:index :luceneIndex .
 
-# Lucene text index configuration
 :luceneIndex a text:TextIndexLucene ;
-    # Use a relative directory inside the dataset folder
     text:directory <file:/fuseki/run/databases/dbpedia-21-05-2025/lucene> ;
-    # Store literal values to enable result retrieval
     text:storeValues true ;
-    # Default analyzer used for indexing and querying
     text:analyzer [ a text:StandardAnalyzer ] ;
-    # Optional query analyzer, here using KeywordAnalyzer for exact matches
     text:queryAnalyzer [ a text:StandardAnalyzer ] ;
-    # Use analyzing query parser to support advanced queries
     text:queryParser text:QueryParser ;
-    # Entity map controls which RDF properties to index and how
     text:entityMap :entityMap ;
-    # Enable multilingual support for language tags (optional)
     text:multilingualSupport true .
 
-# Entity map: specify fields and predicates to index
 :entityMap a text:EntityMap ;
-    text:entityField "uri" ;       # Field holding the subject URI
-    text:defaultField "text" ;     # Default search field name
-    text:uidField "uid" ;          # Unique ID for documents (supports deletion)
-    text:langField "lang" ;        # Language tag field
-    text:graphField "graph" ;      # Graph identifier field
+    text:entityField "uri" ;
+    text:defaultField "label" ;
+    text:uidField "uid" ;
+    text:langField "lang" ;
+    text:graphField "graph" ;
     text:map (
-        [ text:field "text" ; 
+        [ text:field "label" ; 
           text:predicate rdfs:label ; 
           text:analyzer [ a text:StandardAnalyzer ] ]
-        [ text:field "foaf:name" ; 
+        [ text:field "foaf_name" ; 
           text:predicate foaf:name ; 
           text:analyzer [ a text:StandardAnalyzer ] ]
-        [ text:field "skos:prefLabel" ; 
+        [ text:field "skos_prefLabel" ; 
           text:predicate skos:prefLabel ; 
           text:analyzer [ a text:StandardAnalyzer ] ]
         [ text:field "comment" ; 
