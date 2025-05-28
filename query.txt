@@ -1,0 +1,281 @@
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX text: <http://jena.apache.org/text#>
+
+#/test_5-10-2025/update
+#CLEAR ALL
+#DROP ALL
+
+#SELECT DISTINCT ?g
+#WHERE {
+#  GRAPH ?g {
+#    ?s ?p ?o 
+#  }
+#}
+#
+#SELECT * 
+##FROM <urn:x-arq:DefaultGraph> 
+##FROM <http://www.sw.org/ontology/pizza>
+#FROM <https://www.sw.org/ontology/doid>
+#WHERE { 
+#  ?s ?p ?o 
+#} 
+#LIMIT 10
+
+#SELECT *
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  ?sub ?pred ?obj .
+#} 
+#LIMIT 10
+
+#SELECT (COUNT(DISTINCT ?orgs) AS ?total_orgs)
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  ?orgs a <http://dbpedia.org/ontology/Organisation> .
+#}
+#
+
+
+#DELETE DATA
+#{ 
+#  GRAPH <http://example/bookStore> { 
+#    <http://example/book1> <http://example.org/ns#:price>  42 .
+#  } 
+#}
+
+#SELECT DISTINCT ?org_name ?founder ?product
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  BIND(<http://dbpedia.org/resource/Nvidia> AS ?org)
+#  {
+#    ?org dbo:foundedBy ?founder ;
+#  }
+#  UNION 
+#  {
+#    ?org dbo:product ?product .
+#  }
+# 
+#}
+
+#DESCRIBE <http://dbpedia.org/resource/Graphics_processing_unit>
+
+#SELECT DISTINCT ?founder ?product ?operatingIncome ?pointInTime ?startTime ?endTime 
+#WHERE { 
+#  {
+#    # DBpedia part: organization details
+#    SERVICE <https://dbpedia.org/sparql> {
+#      BIND(<http://dbpedia.org/resource/Nvidia> AS ?org)
+#      OPTIONAL { ?org rdfs:label ?org_name .}
+#      OPTIONAL { ?org dbo:founder ?founder . }
+#      OPTIONAL { ?org dbo:product ?product . }
+#    }
+#  }
+#  UNION
+#  {
+#    # Wikidata part: operating income for NVIDIA
+#    SERVICE <https://query.wikidata.org/sparql> {
+#      wd:Q182477 p:P2139 ?statement .
+#      ?statement ps:P2139 ?operatingIncome .
+#      OPTIONAL { ?statement pq:P585 ?pointInTime . }
+#      OPTIONAL { ?statement pq:P580 ?startTime . }
+#      OPTIONAL { ?statement pq:P582 ?endTime . }
+#    }
+#  }
+#}
+#ORDER BY ?pointInTime
+
+#SELECT ?movie ?director 
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  BIND (dbr:Inception as ?movie)
+#  ?movie dbo:director ?director .
+##         rdfs:label ?movie_label
+#}
+
+#SELECT ?film ?director
+#FROM <https://www.sw.org/dpbedia/ontology>
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  ?film rdf:type dbo:Film .
+#  ?film dbo:director ?director .
+#  
+#}
+#LIMIT 5
+
+#SELECT ?film ?director ?label
+#FROM <https://www.sw.org/dpbedia/ontology>
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  ?film rdf:type dbo:Film .
+#  ?film dbo:director ?director .
+#
+#  OPTIONAL { ?film rdfs:label ?rdfsLabel . }
+#  OPTIONAL { ?film foaf:name ?foafName . }
+#
+#  BIND(COALESCE(?rdfsLabel, ?foafName) AS ?label)
+#
+#  FILTER (
+#    LANG(?label) = "en" &&
+#    CONTAINS(LCASE(STR(?label)), LCASE(STR("Inception")))
+#  )
+#}
+#LIMIT 1
+
+#SELECT DISTINCT ?founder
+#FROM <https://www.sw.org/dpbedia/ontology>
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  	?company rdf:type dbo:Company .
+#  	?company dbo:foundedBy ?founder.
+#  
+#  	OPTIONAL { ?company rdfs:label ?rdfsLabel . }
+#  	OPTIONAL { ?company foaf:name ?foafName . }
+#  	OPTIONAL { ?company skos:prefLabel ?skosPrefLabel . }
+#  
+#  	BIND(COALESCE(?rdfsLabel, ?foafName, ?skosPrefLabel) AS ?label)
+#
+#    FILTER (
+#      LANG(?label) = "en" &&
+#      CONTAINS(LCASE(STR(?label)), LCASE(STR("Nvidia")))
+#    )
+#}
+
+#SELECT DISTINCT *
+#WHERE {
+#  BIND(<http://dbpedia.org/resource/Nvidia> AS ?company)
+#  ?company rdf:type dbo:Company ;
+#}
+#LIMIT 10
+
+#SELECT ?s ?foaf_label ?score WHERE {
+#  (?s ?score) text:query ( "foaf_name:Inception" ) .
+##  (?s ?score) text:query ( "foaf_name:NVIDIA Corporation" ) .
+##  (?s ?score) text:query ( "NVIDIA Corporation" ) .
+#  ?s foaf:name ?foaf_label .
+#}
+#ORDER BY DESC(?score)
+#LIMIT 10
+
+#PREFIX text: <http://jena.apache.org/text#>
+#PREFIX dbo: <http://dbpedia.org/ontology/>
+#PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+#PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+#PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+#PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+#
+#SELECT DISTINCT ?company ?founder ?score WHERE {
+#  (?company ?score) text:query ( "foaf_name:Nvidia" ).
+#  
+#  ?company rdf:type dbo:Company .
+#  ?company dbo:foundedBy ?founder .
+#  
+##  OPTIONAL { ?company rdfs:label ?rdfsLabel }
+##  OPTIONAL { ?company foaf:name ?foafName }
+##  OPTIONAL { ?company skos:prefLabel ?skosPrefLabel }
+##
+##  # This helps get a label for display or further filtering if needed
+##  BIND(COALESCE(?rdfsLabel, ?foafName, ?skosPrefLabel) AS ?company_label)
+#}
+#ORDER BY DESC(?score)
+
+
+#PREFIX text: <http://jena.apache.org/text#>
+#PREFIX dbo: <http://dbpedia.org/ontology/>
+#PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+#PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+#
+#SELECT DISTINCT ?founder 
+#FROM <https://www.sw.org/dpbedia/ontology>
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  {
+#  	(?company ?score) text:query ( "label:Nvidia" ).
+#  }
+#  UNION
+#  {
+#    (?company ?score) text:query ( "foaf_name:Nvidia" ).
+#  }
+#  UNION
+#  {
+#    (?company ?score) text:query ( "skos_prefLabel:Nvidia" ).
+#  }
+#
+#  ?company rdf:type dbo:Company .
+#  ?company dbo:foundedBy ?founder .
+#}
+#ORDER BY DESC(?score)
+
+
+#PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+#PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+#PREFIX dbo: <http://dbpedia.org/ontology/>
+#PREFIX text: <http://jena.apache.org/text#>
+#
+#SELECT ?director
+#FROM <https://www.sw.org/dpbedia/ontology>
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+#  {
+#  	(?film ?score) text:query ( "label:Inception" ) .
+#  }
+#  UNION 
+#  {
+#    (?film ?score) text:query ( "foaf_name:Inception" ) .
+#  }
+#  UNION 
+#  {
+#    (?film ?score) text:query ( "skos_prefLabel:Inception" ) .
+#  }
+#  
+#  ?film rdf:type dbo:Film .
+#  ?film dbo:director ?director .
+#}
+#ORDER BY DESC(?score)
+
+#SELECT (COUNT(DISTINCT ?books) AS ?total_books)
+##SELECT ?books
+#FROM <https://www.sw.org/dpbedia/ontology>
+#FROM <https://www.sw.org/dpbedia/data>
+#WHERE {
+##  ?books a <http://purl.org/ontology/bibo/Book> .
+#  ?books a <http://dbpedia.org/ontology/Book>
+#}
+##LIMIT 10
+
+#SELECT ?book_equivalent_class
+#FROM <https://www.sw.org/dpbedia/ontology>
+#WHERE {
+#  {
+#    (?book ?score) text:query ( "label:Book" ) .
+#  }
+#  UNION
+#  {
+#    (?book ?score) text:query ( "foaf_name:Book" ) .
+#  }
+#  UNION
+#  {
+#    (?book ?score) text:query ( "skos_prefLabel:Book" ) .
+#  }
+#  
+#  ?book owl:equivalentClass ?book_equivalent_class .
+##  ?books a <http://dbpedia.org/ontology/Book>
+#}
+#ORDER BY DESC(?score)
+##LIMIT 10
+
+
+
+#DESCRIBE <http://dbpedia.org/ontology/Book>
+#DESCRIBE <http://dbpedia.org/resource/Nvidia>
+#DESCRIBE <http://dbpedia.org/resource/Inception>
