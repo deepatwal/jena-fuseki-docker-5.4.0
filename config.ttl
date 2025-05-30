@@ -1,62 +1,120 @@
-PREFIX :       <http://base/#>
-PREFIX fuseki: <http://jena.apache.org/fuseki#>
-PREFIX ja:     <http://jena.hpl.hp.com/2005/11/Assembler#>
-PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX foaf:   <http://xmlns.com/foaf/0.1/>
-PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
-PREFIX tdb2:   <http://jena.apache.org/2016/tdb#>
-PREFIX text:   <http://jena.apache.org/text#>
+@prefix :       <http://base/#> .
+@prefix fuseki: <http://jena.apache.org/fuseki#> .
+@prefix ja:     <http://jena.hpl.hp.com/2005/11/Assembler#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix tdb2:   <http://jena.apache.org/2016/tdb#> .
+@prefix text:   <http://jena.apache.org/text#> .
 
-[] a fuseki:Server ;
+[] rdf:type fuseki:Server ;
    fuseki:services (
-     [
-       a fuseki:Service ;
-       fuseki:name                       "dbpedia-21-05-2025" ;
-       fuseki:serviceQuery               "query" , "sparql" ;
-       fuseki:serviceUpdate              "update" ;
-       fuseki:serviceUpload              "upload" ;
-       fuseki:serviceReadGraphStore      "get" ;
-       fuseki:serviceReadWriteGraphStore "data" ;
-       fuseki:dataset                   :dbpedia-21-05-2025
-     ]
+     :service-dbpedia-21-05-2025
+     :service-reasoner-30-05-2025
    ) ;
    fuseki:securityFile "/fuseki/run/shiro.ini" .
 
-:dbpedia-21-05-2025
-  a text:TextDataset ;
-  text:dataset [
-    a tdb2:DatasetTDB2 ;
-    tdb2:location "/fuseki/run/databases/dbpedia-21-05-2025";
-    tdb2:unionDefaultGraph true
-  ] ;
-  text:index :luceneIndex .
+# DBpedia Dataset Service with Text Indexing
+:service-dbpedia-21-05-2025 rdf:type fuseki:Service ;
+    fuseki:name "dbpedia-21-05-2025" ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:query ;
+        fuseki:name "query"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:query ;
+        fuseki:name "sparql"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:update ;
+        fuseki:name "update"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:upload ;
+        fuseki:name "upload"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:gsp-r ;
+        fuseki:name "get"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:gsp-rw ;
+        fuseki:name "data"
+    ] ;
+    fuseki:dataset :dbpedia-21-05-2025 .
 
-:luceneIndex a text:TextIndexLucene ;
+:dbpedia-21-05-2025 rdf:type text:TextDataset ;
+    text:dataset [
+        rdf:type tdb2:DatasetTDB2 ;
+        tdb2:location "/fuseki/run/databases/dbpedia-21-05-2025" ;
+        tdb2:unionDefaultGraph true
+    ] ;
+    text:index :luceneIndex .
+
+:luceneIndex rdf:type text:TextIndexLucene ;
     text:directory <file:/fuseki/run/databases/dbpedia-21-05-2025/lucene> ;
     text:storeValues true ;
-    text:analyzer [ a text:StandardAnalyzer ] ;
-    text:queryAnalyzer [ a text:StandardAnalyzer ] ;
+    text:analyzer [ rdf:type text:StandardAnalyzer ] ;
+    text:queryAnalyzer [ rdf:type text:StandardAnalyzer ] ;
     text:queryParser text:QueryParser ;
     text:entityMap :entityMap ;
     text:multilingualSupport true .
 
-:entityMap a text:EntityMap ;
+:entityMap rdf:type text:EntityMap ;
     text:entityField "uri" ;
     text:defaultField "label" ;
     text:uidField "uid" ;
     text:langField "lang" ;
     text:graphField "graph" ;
     text:map (
-        [ text:field "label" ; 
-          text:predicate rdfs:label ; 
-          text:analyzer [ a text:StandardAnalyzer ] ]
-        [ text:field "foaf_name" ; 
-          text:predicate foaf:name ; 
-          text:analyzer [ a text:StandardAnalyzer ] ]
-        [ text:field "skos_prefLabel" ; 
-          text:predicate skos:prefLabel ; 
-          text:analyzer [ a text:StandardAnalyzer ] ]
-        [ text:field "comment" ; 
-          text:predicate rdfs:comment ]
+      [ text:field "label" ; text:predicate rdfs:label ; text:analyzer [ rdf:type text:StandardAnalyzer ] ]
+      [ text:field "foaf_name" ; text:predicate foaf:name ; text:analyzer [ rdf:type text:StandardAnalyzer ] ]
+      [ text:field "skos_prefLabel" ; text:predicate skos:prefLabel ; text:analyzer [ rdf:type text:StandardAnalyzer ] ]
+      [ text:field "comment" ; text:predicate rdfs:comment ]
     ) .
+
+# Reasoner Dataset Service with OWL FB Rule Reasoner
+:service-reasoner-30-05-2025 rdf:type fuseki:Service ;
+    fuseki:name "reasoner-30-05-2025" ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:query ;
+        fuseki:name "query"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:query ;
+        fuseki:name "sparql"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:update ;
+        fuseki:name "update"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:upload ;
+        fuseki:name "upload"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:gsp-r ;
+        fuseki:name "get"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:gsp-rw ;
+        fuseki:name "data"
+    ] ;
+    fuseki:dataset :reasoner-30-05-2025 .
+
+:reasoner-30-05-2025 rdf:type ja:RDFDataset ;
+    ja:defaultGraph :reasoner-30-05-2025-inference-model .
+
+:reasoner-30-05-2025-inference-model rdf:type ja:InfModel ;
+    ja:reasoner [
+        ja:reasonerURL <http://jena.hpl.hp.com/2003/OWLFBRuleReasoner>
+    ] ;
+    ja:baseModel :reasoner-30-05-2025-base-graph .
+
+:reasoner-30-05-2025-base-graph rdf:type tdb2:GraphTDB2 ;
+    tdb2:dataset :reasoner-30-05-2025-base-dataset .
+
+:reasoner-30-05-2025-base-dataset rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location "/fuseki/run/databases/reasoner-30-05-2025" ;
+    tdb2:unionDefaultGraph true .
