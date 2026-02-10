@@ -7,11 +7,11 @@ services:
     ports:
       - "3030:3030"
     volumes:
-      - ./databases:/fuseki/run/databases
-      - ./configuration:/fuseki/run/configuration
+      - ./jena-data/databases:/fuseki/run/databases
+      - ./jena-data/configuration:/fuseki/run/configuration
       - ./config.ttl:/fuseki/run/config.ttl
       - ./shiro.ini:/fuseki/run/shiro.ini
-      - ./tmp:/fuseki/tmp
+      - ./jena-data/tmp:/fuseki/tmp
     environment:
       FUSEKI_ADMIN_USER: admin
       FUSEKI_ADMIN_PASSWORD: admin
