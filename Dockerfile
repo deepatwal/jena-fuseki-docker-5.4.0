@@ -2,7 +2,7 @@
 ARG JAVA_VERSION=21
 FROM eclipse-temurin:${JAVA_VERSION}-alpine
 
-ARG JENA_VERSION=5.6.0
+ARG JENA_VERSION=6.0.0
 ARG REPO=https://repo1.maven.org/maven2
 
 # Install curl

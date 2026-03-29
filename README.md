@@ -1,4 +1,13 @@
 #----------------------------------------------------------------------------------------------
+Update the jena version in the docker compose file
+and download the fuseki-server latest jar from here: https://jena.apache.org/download/
+  from the section here:
+    The binary distribution of the Fuseki server:
+
+
+then rebuild the docker file.
+
+#----------------------------------------------------------------------------------------------
 pre requisite:
 
 export USER_ID=$(id -u)
